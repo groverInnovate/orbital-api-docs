@@ -5,24 +5,12 @@ Complete reference for all Orbital Pool API endpoints.
 ## Base URL
 
 ```
-https://your-orbital-api.com
+http://localhost:8000
 ```
 
 ## Authentication
 
-The Orbital Pool API does not require authentication. All endpoints are publicly accessible.
-
-## Rate Limits
-
-- **Default**: 100 requests per minute per IP
-- **Burst**: Up to 10 requests per second
-- **Headers**: Rate limit info included in response headers
-
-```http
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 95
-X-RateLimit-Reset: 1640995200
-```
+No authentication required. All endpoints are public.
 
 ---
 
@@ -311,9 +299,7 @@ All endpoints return consistent error responses:
 |-------------|-------|-------------|
 | `400` | Bad Request | Invalid request parameters |
 | `404` | Not Found | Endpoint not found |
-| `429` | Too Many Requests | Rate limit exceeded |
 | `500` | Internal Server Error | Server error |
-| `503` | Service Unavailable | API temporarily unavailable |
 
 ### Specific Error Messages
 
@@ -336,57 +322,4 @@ All endpoints return consistent error responses:
 
 ---
 
-## SDKs and Libraries
-
-### JavaScript/TypeScript
-
-```bash
-npm install @orbital/sdk
-```
-
-```javascript
-import { OrbitalSDK } from '@orbital/sdk';
-
-const orbital = new OrbitalSDK('https://your-orbital-api.com');
-const swapData = await orbital.swap(0, 1, '1000000000000000000', userAddress);
-```
-
-### Python
-
-```bash
-pip install orbital-sdk
-```
-
-```python
-from orbital_sdk import OrbitalClient
-
-client = OrbitalClient('https://your-orbital-api.com')
-swap_data = client.swap(0, 1, '1000000000000000000', user_address)
-```
-
-### Go
-
-```bash
-go get github.com/orbital/go-sdk
-```
-
-```go
-import "github.com/orbital/go-sdk"
-
-client := orbital.NewClient("https://your-orbital-api.com")
-swapData, err := client.Swap(0, 1, "1000000000000000000", userAddress)
-```
-
----
-
-## OpenAPI Specification
-
-Download the complete OpenAPI 3.0 specification:
-
-- [**orbital-api.yaml**](./openapi.yaml) - OpenAPI specification file
-- [**Swagger UI**](https://your-orbital-api.com/docs) - Interactive API explorer
-- [**Postman Collection**](./orbital-api.postman.json) - Import into Postman
-
----
-
-**Next**: [Integration Guides →](./integration-guides.md)
+**Next**: [Examples →](./examples.md)

@@ -17,7 +17,7 @@ async function swapTokens() {
   const userAddress = await signer.getAddress();
 
   // Swap 1 MUSDC-A for MUSDC-B
-  const response = await fetch('https://your-orbital-api.com/swap', {
+  const response = await fetch('http://localhost:8000/swap', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -50,7 +50,7 @@ def swap_tokens(private_key, amount_in):
     account = w3.eth.account.from_key(private_key)
     
     # Get swap transaction
-    response = requests.post('https://your-orbital-api.com/swap', json={
+    response = requests.post('http://localhost:8000/swap', json={
         'token_in_index': 0,
         'token_out_index': 1,
         'amount_in': str(amount_in),

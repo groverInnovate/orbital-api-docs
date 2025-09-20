@@ -11,7 +11,7 @@ Perfect for DeFi dApps, portfolio managers, and wallet interfaces.
 #### 1. Install Dependencies
 
 ```bash
-npm install ethers @orbital/sdk
+npm install ethers
 ```
 
 #### 2. Create Orbital Hook
@@ -96,7 +96,7 @@ export const SwapWidget: React.FC = () => {
   const [amountIn, setAmountIn] = useState('');
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
   
-  const { swap, loading, error } = useOrbital('https://your-orbital-api.com');
+  const { swap, loading, error } = useOrbital('http://localhost:8000');
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -523,124 +523,6 @@ export const useOrbitalMobile = () => {
 ```
 
 ---
-
-## Advanced Patterns
-
-### Multi-Hop Routing
-
-```javascript
-class OrbitalRouter {
-  constructor(apiUrl) {
-    this.apiUrl = apiUrl;
-  }
-
-  async findBestRoute(tokenIn, tokenOut, amountIn) {
-    // Direct route
-    const directQuote = await this.getQuote(tokenIn, tokenOut, amountIn);
-    
-    // Multi-hop routes (A -> C -> B)
-    const routes = [];
-    for (let intermediate = 0; intermediate < 5; intermediate++) {
-      if (intermediate === tokenIn || intermediate === tokenOut) continue;
-      
-      try {
-        const hop1 = await this.getQuote(tokenIn, intermediate, amountIn);
-        const hop2 = await this.getQuote(intermediate, tokenOut, hop1.expectedOutput);
-        
-        routes.push({
-          path: [tokenIn, intermediate, tokenOut],
-          expectedOutput: hop2.expectedOutput,
-          gasEstimate: hop1.gasEstimate + hop2.gasEstimate
-        });
-      } catch (error) {
-        // Route not available
-      }
-    }
-    
-    // Return best route
-    return routes.reduce((best, current) => 
-      current.expectedOutput > best.expectedOutput ? current : best,
-      { expectedOutput: directQuote.expectedOutput, path: [tokenIn, tokenOut] }
-    );
-  }
-}
-```
-
-### Batch Operations
-
-```javascript
-class OrbitalBatch {
-  constructor(apiUrl, signer) {
-    this.apiUrl = apiUrl;
-    this.signer = signer;
-  }
-
-  async batchSwaps(swaps) {
-    const transactions = [];
-    
-    for (const swap of swaps) {
-      const response = await fetch(`${this.apiUrl}/swap`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(swap)
-      });
-      
-      const data = await response.json();
-      if (data.success) {
-        transactions.push(data.transaction_data);
-      }
-    }
-    
-    // Send all transactions
-    const promises = transactions.map(tx => this.signer.sendTransaction(tx));
-    return await Promise.all(promises);
-  }
-}
-```
-
----
-
-## Testing
-
-### Unit Tests
-
-```javascript
-// tests/orbital.test.js
-const { expect } = require('chai');
-const { OrbitalClient } = require('../src/orbital-client');
-
-describe('Orbital API Integration', () => {
-  let client;
-  
-  beforeEach(() => {
-    client = new OrbitalClient('https://test-api.orbital.com');
-  });
-
-  it('should get pool health', async () => {
-    const health = await client.getHealth();
-    expect(health.status).to.equal('healthy');
-  });
-
-  it('should get supported tokens', async () => {
-    const tokens = await client.getTokens();
-    expect(tokens.tokens).to.have.property('0');
-    expect(tokens.tokens['0']).to.have.property('symbol');
-  });
-
-  it('should generate swap transaction', async () => {
-    const swap = await client.getSwapTransaction({
-      tokenIn: 0,
-      tokenOut: 1,
-      amountIn: '1000000000000000000',
-      userAddress: '0x...'
-    });
-    
-    expect(swap.success).to.be.true;
-    expect(swap.transaction_data).to.have.property('to');
-    expect(swap.transaction_data).to.have.property('data');
-  });
-});
-```
 
 ---
 
