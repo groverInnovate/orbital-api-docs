@@ -1,49 +1,43 @@
 # Orbital Pool API Documentation
 
-Welcome to the Orbital Pool API documentation. The Orbital Pool API provides developers with simple REST endpoints to integrate with the revolutionary 5-token AMM protocol powered by torus-based invariant mathematics.
+Simple REST API for interacting with the Orbital Pool - a 5-token AMM on Arbitrum Sepolia.
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
-# Get pool health status
-curl https://your-orbital-api.com/health
+# Check API status
+curl http://localhost:8000/health
 
 # Execute a token swap
-curl -X POST https://your-orbital-api.com/swap \
+curl -X POST http://localhost:8000/swap \
   -H "Content-Type: application/json" \
   -d '{
     "token_in_index": 0,
     "token_out_index": 1,
     "amount_in": "1000000000000000000",
     "min_amount_out": "0",
-    "user_address": "0x..."
+    "user_address": "0xYourAddress"
   }'
 ```
 
-## 📚 Documentation Sections
+## Documentation
 
-- [**Overview**](./overview.md) - Introduction and key concepts
-- [**Getting Started**](./getting-started.md) - Quick integration guide
-- [**API Reference**](./api-reference.md) - Complete endpoint documentation
-- [**Integration Guides**](./integration-guides.md) - Step-by-step tutorials
-- [**Examples**](./examples.md) - Code samples and use cases
-- [**Error Handling**](./error-handling.md) - Troubleshooting guide
+- [**Overview**](./overview.md) - What is Orbital Pool API
+- [**Getting Started**](./getting-started.md) - Basic integration
+- [**API Reference**](./api-reference.md) - All endpoints
+- [**Examples**](./examples.md) - Code samples
+- [**Error Handling**](./error-handling.md) - Common issues
 
-## 🌟 Key Features
+## What This API Does
 
-- **5-Token AMM** - Revolutionary torus-based invariant for optimal price discovery
-- **Simple REST API** - Easy integration with any programming language
-- **Gas Optimization** - Built-in gas estimation and optimization
-- **Secure Design** - Never handles private keys, returns unsigned transactions
-- **Production Ready** - Battle-tested on Arbitrum Sepolia
+- **Token Swaps** - Exchange between 5 supported tokens
+- **Add Liquidity** - Provide liquidity to earn fees
+- **Remove Liquidity** - Withdraw your liquidity
+- **Gas Estimation** - Get current gas prices
+- **Pool Status** - Check API and pool health
 
-## 🔗 Quick Links
+## Network Details
 
-- [Live API](https://your-orbital-api.com) - Production endpoint
-- [GitHub Repository](https://github.com/your-org/orbital-pool) - Source code
-- [Demo Application](https://orbital-demo.com) - Interactive example
-- [Support](mailto:support@orbital.com) - Get help
-
----
-
-*Built with ❤️ for the DeFi community*
+- **Chain**: Arbitrum Sepolia (Chain ID: 421614)
+- **Pool Contract**: `0x83EC719A6F504583d0F88CEd111cB8e8c0956431`
+- **Supported Tokens**: MUSDC-A, MUSDC-B, MUSDC-C, MUSDC-D, MUSDC-E

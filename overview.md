@@ -2,119 +2,60 @@
 
 ## What is Orbital Pool API?
 
-The Orbital Pool API is a RESTful interface for interacting with the Orbital Pool protocol - a revolutionary 5-token Automated Market Maker (AMM) that uses torus-based invariant mathematics for superior price discovery and liquidity management.
+A simple REST API for interacting with the Orbital Pool - a 5-token AMM deployed on Arbitrum Sepolia.
 
-## Key Concepts
+## The Pool
 
-### 5-Token AMM Architecture
+**Contract Address**: `0x83EC719A6F504583d0F88CEd111cB8e8c0956431`
 
-Unlike traditional 2-token AMMs, Orbital Pool manages liquidity across 5 tokens simultaneously:
+The Orbital Pool is an experimental AMM that manages 5 tokens:
+- **MUSDC-A** (Index: 0) - `0x9666526dcF585863f9ef52D76718d810EE77FB8D`
+- **MUSDC-B** (Index: 1) - `0x1921d350666BA0Cf9309D4DA6a033EE0f0a70bEC`
+- **MUSDC-C** (Index: 2) - Mock token for testing
+- **MUSDC-D** (Index: 3) - Mock token for testing  
+- **MUSDC-E** (Index: 4) - Mock token for testing
 
-- **MUSDC-A** (Token Index: 0)
-- **MUSDC-B** (Token Index: 1) 
-- **MUSDC-C** (Token Index: 2)
-- **MUSDC-D** (Token Index: 3)
-- **MUSDC-E** (Token Index: 4)
+## How It Works
 
-### Torus-Based Invariant
+### Swaps
+- Exchange any of the 5 tokens for any other
+- Uses torus-based mathematical invariant for pricing
+- Fallback to constant product formula when needed
 
-The protocol uses advanced mathematical models based on torus geometry to:
-- **Optimize price discovery** across multiple token pairs
-- **Minimize impermanent loss** for liquidity providers
-- **Enable efficient multi-hop swaps** within a single pool
+### Liquidity
+- Add liquidity to specific "ticks" (k-values)
+- Remove liquidity and claim fees
+- Tick system manages liquidity distribution
 
-### Tick-Based Liquidity Management
+### API Design
+- **Stateless** - No user accounts or sessions
+- **Secure** - Never handles private keys
+- **Simple** - Returns unsigned transaction data for wallet signing
 
-Orbital Pool implements a sophisticated tick system:
+## What You Can Do
 
-- **Interior Ticks** - Liquidity within mathematical constraints
-- **Boundary Ticks** - Liquidity at constraint boundaries
-- **Radius Calculations** - Dynamic liquidity distribution
+| Endpoint | Purpose |
+|----------|---------|
+| `GET /health` | Check if API and pool are working |
+| `GET /tokens` | Get list of supported tokens |
+| `POST /swap` | Get transaction data for token swap |
+| `POST /liquidity/add` | Get transaction data to add liquidity |
+| `POST /liquidity/remove` | Get transaction data to remove liquidity |
+| `GET /gas-price` | Get current gas price |
 
-## API Design Philosophy
+## Network Details
 
-### Secure by Design
-
-- **No Private Keys** - API never handles or stores private keys
-- **Unsigned Transactions** - Returns transaction data for client-side signing
-- **Stateless** - No user session management required
-
-### Developer-First
-
-- **Simple REST** - Standard HTTP methods and JSON responses
-- **Language Agnostic** - Works with any programming language
-- **Comprehensive Errors** - Detailed error messages and codes
-
-### Production Ready
-
-- **Gas Optimization** - Built-in gas estimation and optimization
-- **Rate Limiting** - Configurable request limits
-- **Monitoring** - Health checks and status endpoints
-
-## Network Information
-
-### Arbitrum Sepolia Testnet
-
+- **Blockchain**: Arbitrum Sepolia Testnet
 - **Chain ID**: 421614
-- **RPC URL**: `https://sepolia-rollup.arbitrum.io/rpc`
-- **Pool Contract**: `0x83EC719A6F504583d0F88CEd111cB8e8c0956431`
-- **Block Explorer**: [Arbiscan Sepolia](https://sepolia.arbiscan.io)
+- **RPC**: `https://sepolia-rollup.arbitrum.io/rpc`
+- **Explorer**: [sepolia.arbiscan.io](https://sepolia.arbiscan.io)
 
-### Supported Operations
+## Requirements
 
-| Operation | Description | Endpoint |
-|-----------|-------------|----------|
-| **Token Swaps** | Exchange one token for another | `POST /swap` |
-| **Add Liquidity** | Provide liquidity to earn fees | `POST /liquidity/add` |
-| **Remove Liquidity** | Withdraw liquidity and fees | `POST /liquidity/remove` |
-| **Pool Status** | Get pool health and info | `GET /health` |
-| **Token Info** | Get supported tokens | `GET /tokens` |
-| **Gas Price** | Current network gas price | `GET /gas-price` |
-
-## Use Cases
-
-### For DeFi Applications
-
-- **DEX Aggregators** - Include Orbital Pool in routing algorithms
-- **Portfolio Managers** - Rebalance portfolios using 5-token swaps
-- **Yield Farming** - Provide liquidity to earn trading fees
-
-### For Traders
-
-- **Arbitrage Bots** - Exploit price differences across pools
-- **Market Makers** - Provide liquidity and earn fees
-- **Multi-Token Strategies** - Execute complex trading strategies
-
-### For Developers
-
-- **Wallet Integration** - Add swap functionality to wallets
-- **DeFi Protocols** - Integrate as a liquidity source
-- **Analytics Platforms** - Track pool performance and metrics
-
-## Getting Started
-
-Ready to integrate? Check out our [Getting Started Guide](./getting-started.md) for step-by-step instructions.
-
-## Architecture Diagram
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Your App     │    │  Orbital API    │    │  Orbital Pool   │
-│                │    │                 │    │   Contract      │
-├─────────────────┤    ├─────────────────┤    ├─────────────────┤
-│ • Frontend      │───▶│ • REST Endpoints│───▶│ • 5-Token AMM   │
-│ • Backend       │    │ • Gas Estimation│    │ • Torus Math    │
-│ • Mobile App    │    │ • Error Handling│    │ • Tick System   │
-│ • Trading Bot   │    │ • Rate Limiting │    │ • Fee Distribution│
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   MetaMask      │    │   Monitoring    │    │  Arbitrum       │
-│   Wallet        │    │   & Analytics   │    │  Sepolia        │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
+To use this API you need:
+- MetaMask or other Ethereum wallet
+- Some Arbitrum Sepolia ETH for gas
+- Test tokens (MUSDC-A, MUSDC-B, etc.)
 
 ---
 
